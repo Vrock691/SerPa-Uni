@@ -27,9 +27,36 @@ if image is not None:
     img = cv2.imread('img.png', cv2.IMREAD_COLOR)
     img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-    # Filtre canny
-    img = cv2.Canny(img, 50, 50)
+    # Segmentation de l'image
+    _, img = cv2.threshold(img, 100, 255, 0)
 
-    # Tentative de trouver un pattern de rond
+    # création de l’objet de la classe ORB
+    orb = cv2.ORB_create()
+
+    # points de l'image uploadé
+    pointsPath1, descripteursImgPath1 = orb.detectAndCompute(img, None)
+
+    # Tentative de trouver un pattern dans les 16 disponibles
+    finds = []
+    for i in range(16):
+        print(img)
+
+        path = "./patterns/Paterne" + str(i+1) + ".png"
+        st.write(path)
+        currentPattern = cv2.imread(path, cv2.IMREAD_COLOR)
+        currentPattern = cv2.cvtColor(currentPattern, cv2.COLOR_BGR2GRAY)
+
+        # descripteurs
+        pointsPath2, descripteursImgPath2 = orb.detectAndCompute(currentPattern, None)
+
+        algoBF = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=False)
+        paires_corresp = algoBF.knnMatch(descripteursImgPath1, descripteursImgPath2, k=5)
+
+        # Tri par distance
+        Matches_tri = sorted(paires_corresp, key=lambda x:x[0].distance)
+
+        # Affichage
+        matched = cv2.drawMatchesKnn(img, pointsPath1, currentPattern, pointsPath2, Matches_tri[:10], None)
+        st.image(matched)
 
     st.image(img)

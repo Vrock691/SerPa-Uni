@@ -30,4 +30,6 @@ if image is not None:
     # Filtre canny
     img = cv2.Canny(img, 50, 50)
 
+    # Tentative de trouver un pattern de rond
+
     st.image(img)

@@ -6,7 +6,10 @@ Ledit paterne est composé de 4 cerles (*3 noirs pleins et 1 blanc avec des cont
 
 ## Fonctionnalités
 
-Ce système de reconnaissance fonctionne avec la majorité des images : Qu'elles soient en noir et blanc, nettes ou flous et avec relativement peu de bruits (*pixels parasites*).
+Ce système de reconnaissance fonctionne avec la majorité des images, qu'elles soient : 
+- En couleurs ou en noir et blanc.
+- Nettes ou flous.
+- Parasitées ou non.
 
 ## Utilisation
 

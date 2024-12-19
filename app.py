@@ -4,21 +4,18 @@ import cv2
 import numpy as np
 from PIL import Image
 
- 
 image = None 
 
 st.write("""
-# SerPA
-         
+# SerPA   
 Uploadez une image ici :
 """)
 
 image = st.file_uploader("Image", type=['png', 'jpg'] , accept_multiple_files=False, label_visibility="visible")
 
 if image is not None:
-    st.write("""
-        Votre image
-""")
+    st.write("""Votre image""")
+
     # Enregistrement de l'image en mémoire
     imageToSave = Image.open(image)
     imageToSave = imageToSave.save('img.png')
@@ -37,7 +34,6 @@ if image is not None:
     pointsPath1, descripteursImgPath1 = orb.detectAndCompute(img, None)
 
     # Tentative de trouver un pattern dans les 16 disponibles
-    finds = []
     for i in range(16):
         print(img)
 
@@ -56,7 +52,7 @@ if image is not None:
         Matches_tri = sorted(paires_corresp, key=lambda x:x[0].distance)
 
         # Affichage
-        matched = cv2.drawMatchesKnn(img, pointsPath1, currentPattern, pointsPath2, Matches_tri[:10], None)
+        matched = cv2.drawMatchesKnn(img, pointsPath1, currentPattern, pointsPath2, Matches_tri[:25], None)
         st.image(matched)
 
     st.image(img)

@@ -18,7 +18,7 @@
       ]
     }
   },
-  "updateContentCommand": "sudo apt-get update && sudo apt-get upgrade -y && sudo apt-get install libgl1 && sudo apt; [ -f requirements.txt ] && pip3 install --user -r requirements.txt; echo '✅ Packages installed and Requirements met'",
+  "updateContentCommand": "sudo apt-get update && sudo apt-get upgrade -y && sudo apt-get install -y libgl1 && sudo apt; [ -f requirements.txt ] && pip3 install --user -r requirements.txt; echo '✅ Packages installed and Requirements met'",
   "postAttachCommand": {
     "server": "streamlit run app.py --server.enableCORS false --server.enableXsrfProtection false"
   },

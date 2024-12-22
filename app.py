@@ -1,3 +1,5 @@
+'''
+
 import streamlit as st
 import pandas as pd
 import cv2
@@ -59,10 +61,30 @@ if image is not None:
     st.image(img)
 
     '''
-    import streamlit as st
-    import cv2
-    import numpy as np
-    from PIL import Image
+
+'''
+Algorithme utilisant SIFT
+Fonctionne avec :
+    - 1-3
+    - 1-3-autre
+
+Erreur avec :
+    - 4-3
+    - 3-3
+    - 2-3
+    - T-2
+    - 3-1
+    - 2-1
+Les erreurs peuvent être un léger soucis d'identification de pattern ou une mauvaise reconnaissance.
+
+Ne fonctionne pas avec le reste.
+
+'''
+
+import streamlit as st
+import cv2
+import numpy as np
+from PIL import Image
 
 image = None
 
@@ -89,11 +111,11 @@ if image is not None:
     # Segmentation de l'image
     _, img_thresh = cv2.threshold(img_gray, 100, 255, cv2.THRESH_BINARY)
 
-    # Création de l’objet ORB
-    orb = cv2.ORB_create()
+    # Création de l’objet SIFT
+    sift = cv2.SIFT_create()
 
     # Points et descripteurs de l'image uploadée
-    keypoints1, descriptors1 = orb.detectAndCompute(img_thresh, None)
+    keypoints1, descriptors1 = sift.detectAndCompute(img_thresh, None)
 
     if descriptors1 is None:
         st.error("Aucun point clé détecté dans l'image uploadée. Essayez une autre image.")
@@ -103,7 +125,7 @@ if image is not None:
 
         # Parcourir les 16 patterns
         for i in range(16):
-            pattern_path = f"./patterns/Paterne{i + 1}.png"
+            pattern_path = "./patterns/Paterne" + str(i+1) + ".png"
             st.write(f"Traitement du pattern : {pattern_path}")
 
             # Charger le pattern
@@ -116,13 +138,13 @@ if image is not None:
             pattern_gray = cv2.cvtColor(current_pattern, cv2.COLOR_BGR2GRAY)
 
             # Points et descripteurs du pattern
-            keypoints2, descriptors2 = orb.detectAndCompute(pattern_gray, None)
+            keypoints2, descriptors2 = sift.detectAndCompute(pattern_gray, None)
             if descriptors2 is None:
                 st.warning(f"Aucun point clé détecté dans le pattern {pattern_path}.")
                 continue
 
-            # Appariement des descripteurs
-            bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=False)
+            # Appariement des descripteurs avec BFMatcher
+            bf = cv2.BFMatcher(cv2.NORM_L2, crossCheck=False)  # SIFT utilise NORM_L2
             matches = bf.knnMatch(descriptors1, descriptors2, k=2)
 
             # Filtrage des bonnes correspondances avec le ratio test
@@ -156,4 +178,4 @@ if image is not None:
     st.write("### Image prétraitée :")
     st.image(img_thresh, caption="Image en niveaux de gris et seuillée", use_column_width=True)
 
-    '''
+    

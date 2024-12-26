@@ -38,17 +38,59 @@ if image is not None:
         st.image(roi, caption="Zone d'intérêt sélectionnée (ROI)", use_container_width=True)
     else:
         st.error("La zone sélectionnée n'est pas valide. Vérifiez les valeurs des sliders.")
+    
     # Conversion de la ROI en niveaux de gris
     roi_gray = cv2.cvtColor(roi, cv2.COLOR_BGR2GRAY)
+    
+    # Dilatation en cas d'image de petite taille avec gaussian blur
+    if (x1 < 300 or x2 < 300 or y1 < 300 or y2 < 300):
+        roi_gray = cv2.dilate(roi_gray, np.ones((1, 1), np.uint8))
 
     # Segmentation de l'image
     _, roi_thresh = cv2.threshold(roi_gray, 100, 255, cv2.THRESH_BINARY)
+
+    # Détecter les cercles
+    circles = cv2.HoughCircles(
+        roi_thresh,
+        cv2.HOUGH_GRADIENT,
+        dp=1.2,
+        minDist=30,
+        param1=50,
+        param2=30,
+    )
+
+    circleLocation = []
+
+    if circles is not None:
+        st.write("Points d'angles détéctés, mise à plat de l'image")
+        circles = np.uint16(np.around(circles))
+        for i in circles[0, :]:
+            x, y, r = i
+            circleLocation.append([x, y])
+            cv2.circle(roi_thresh, (x, y), r, (0, 0, 255), 0)  # Contour rouge pour autres cercles
+
+        # Sort
+        st.write(circleLocation)
+
+        # Points de l'image source (par exemple, 4 coins d'un document)
+        src_points = np.array(circleLocation, dtype=np.float32)
+
+        # Points de destination (rectangle aplati)
+        dst_points = np.array([[0, 0], [400, 0], [0, 400], [400, 400]], dtype=np.float32)
+
+        # Matrice de transformation
+        matrix = cv2.getPerspectiveTransform(src_points, dst_points)
+
+        # Appliquer la transformation
+        roi_thresh = cv2.warpPerspective(roi_thresh, matrix, (400, 400))
+
+    st.image(roi_thresh)
 
     # Reconnaissance de pattern
     st.write("### Détection de patterns dans la ROI :")
 
     # Création de l'objet SIFT
-    sift = cv2.SIFT_create(nfeatures=800, nOctaveLayers=7, contrastThreshold=0.3)
+    sift = cv2.SIFT_create(nfeatures=1000, nOctaveLayers=1, contrastThreshold=0.3)
 
     # Points et descripteurs pour la ROI
     keypoints1, descriptors1 = sift.detectAndCompute(roi_thresh, None)

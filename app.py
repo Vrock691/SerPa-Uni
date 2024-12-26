@@ -1,92 +1,12 @@
-'''
-
-import streamlit as st
-import pandas as pd
-import cv2
-import numpy as np
-from PIL import Image
-
-image = None 
-
-st.write("""
-# SerPA   
-Uploadez une image ici :
-""")
-
-image = st.file_uploader("Image", type=['png', 'jpg'] , accept_multiple_files=False, label_visibility="visible")
-
-if image is not None:
-    st.write("""Votre image""")
-
-    # Enregistrement de l'image en mémoire
-    imageToSave = Image.open(image)
-    imageToSave = imageToSave.save('img.png')
-
-    # Conversion de l'image en niveau de gris
-    img = cv2.imread('img.png', cv2.IMREAD_COLOR)
-    img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-
-    # Segmentation de l'image
-    _, img = cv2.threshold(img, 100, 255, 0)
-
-    # création de l’objet de la classe ORB
-    orb = cv2.ORB_create()
-
-    # points de l'image uploadé
-    pointsPath1, descripteursImgPath1 = orb.detectAndCompute(img, None)
-
-    # Tentative de trouver un pattern dans les 16 disponibles
-    for i in range(16):
-        print(img)
-
-        path = "./patterns/Paterne" + str(i+1) + ".png"
-        st.write(path)
-        currentPattern = cv2.imread(path, cv2.IMREAD_COLOR)
-        currentPattern = cv2.cvtColor(currentPattern, cv2.COLOR_BGR2GRAY)
-
-        # descripteurs
-        pointsPath2, descripteursImgPath2 = orb.detectAndCompute(currentPattern, None)
-
-        algoBF = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=False)
-        paires_corresp = algoBF.knnMatch(descripteursImgPath1, descripteursImgPath2, k=5)
-
-        # Tri par distance
-        Matches_tri = sorted(paires_corresp, key=lambda x:x[0].distance)
-        
-
-        # Affichage
-        matched = cv2.drawMatchesKnn(img, pointsPath1, currentPattern, pointsPath2, Matches_tri[:25], None)
-        st.image(matched)
-
-    st.image(img)
-
-    '''
-
-'''
-Algorithme utilisant SIFT + Recadrage manuel
-Fonctionne avec :
-
-    NON IDENTIFIE
-
-Erreur avec :
-
-    NON IDENTIFIE
-
-*Les erreurs peuvent être un léger soucis d'identification de pattern ou une mauvaise reconnaissance.*
-
-Ne fonctionne pas avec le reste.
-
-'''
-
 import streamlit as st
 import cv2
 import numpy as np
 from PIL import Image
 
-st.title("SerPA - Sélection de ROI et Reconnaissance de Pattern")
+st.title("SerPA - Reconnaissance de Pattern")
 
 # Chargement de l'image
-image = st.file_uploader("Téléchargez une image", type=["jpg", "png"])
+image = st.file_uploader("Veuillez téléchargez une image juse en dessous :", type=["jpg", "png"])
 
 if image is not None:
     # Chargement de l'image avec PIL
@@ -188,17 +108,18 @@ if image is not None:
             st.error("Aucun pattern détecté.")
 
 '''
-Algorithme utilisant SIFT + Recadrage manuel
-Fonctionne avec :
+L'application fonctionne avec :
 
-    3-3
-
-
-Erreur avec :
-
-    NON IDENTIFIE
-
-*Les erreurs peuvent être un léger soucis d'identification de pattern ou une mauvaise reconnaissance.*
+    3-3 (Avec Resize)
+    4-3 (Sans Resize)
+    1-3 (Avec Resize)
+    2-3 (Avec Resize)
+    B-2-autre (Sans Resize)
+    Patern2_MiseEnAbime (Sans Resize)
+    Produit-1
+    MEA-6-3G (Avec Resize)
+    ---------------------------------
+    Taux de réussite : 24.24%
 
 Ne fonctionne pas avec le reste.
 

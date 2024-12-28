@@ -114,6 +114,11 @@ L'application fonctionne avec :
     4-3 (Sans Resize)
     1-3 (Avec Resize)
     2-3 (Avec Resize)
+
+    MEA-14-4G (Sans Resize)
+    MEA-11-4G (Avec Resize)
+    MEA-5-4G  (Sans Resize)
+
     B-2-autre (Sans Resize)
     Patern2_MiseEnAbime (Sans Resize)
     Produit-1

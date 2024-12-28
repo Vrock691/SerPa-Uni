@@ -76,15 +76,11 @@ Cependant, cette combinaison n’a pas permis d’améliorer significativement l
 
 [A FINIR]
 
-## Partie 3 : Les Forces et Faiblesses
+## Partie 3 : Les Réussites et Les Echecs
 
-Les forces
+Sur 
 
-Les faiblesses :
-    - Si le pattern est légèrement déformé, la reconnaissance ne fonctionne pas comme elle le devrait.
-    - Si le pattern est légèrement flou, la reconnaissance n'arrive pas à capter les points d'intérèts.
-    - Si le pattern est trop petit, l'image avec le ROI devient trop pixélisé. L'erosion n'as pas fonctionnée car elle ne permet pas de relier les segments fractionnés.
-    - Une image trop pixelisé ne fonctionne pas 
+MEA-5-4G fonctionne avec légère déformation !!!!
 
 De manière plus générale, et avec les données que nous avons, notre application arrive à un taux de reussite de : **24,24%**
 

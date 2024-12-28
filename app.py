@@ -5,6 +5,22 @@ from PIL import Image
 
 st.title("SerPA - Reconnaissance de Pattern")
 
+'''
+L'application fonctionne avec :
+
+    3-3 (Avec Resize)
+    4-3 (Sans Resize)
+    1-3 (Avec Resize)
+    2-3 (Avec Resize)
+    B-2-autre (Sans Resize)
+    Patern2_MiseEnAbime (Sans Resize)
+    Produit-1
+    MEA-6-3G (Avec Resize)
+    ---------------------------------
+    Taux de réussite : 24.24% (Ne fonctionne pas avec le reste.)
+
+'''
+
 # Chargement de l'image
 image = st.file_uploader("Veuillez téléchargez une image juse en dessous :", type=["jpg", "png"])
 
@@ -15,7 +31,7 @@ if image is not None:
     h, w, _ = img_array.shape
 
     # Affichage de l'image originale
-    st.image(uploaded_image, caption="Image téléchargée", use_container_width=True)
+    st.write("Image uploadé avec succès !")
 
     # Sliders pour sélectionner la ROI
     st.write("### Sélectionnez la zone d'intérêt (ROI) :")
@@ -50,27 +66,59 @@ if image is not None:
     _, roi_thresh = cv2.threshold(roi_gray, 100, 255, cv2.THRESH_BINARY)
 
     # Détecter les cercles
-    circles = cv2.HoughCircles(
-        roi_thresh,
-        cv2.HOUGH_GRADIENT,
-        dp=1.2,
-        minDist=30,
-        param1=50,
-        param2=30,
-    )
-
     circleLocation = []
 
-    if circles is not None:
-        st.write("Points d'angles détéctés, mise à plat de l'image")
-        circles = np.uint16(np.around(circles))
-        for i in circles[0, :]:
-            x, y, r = i
-            circleLocation.append([x, y])
-            cv2.circle(roi_thresh, (x, y), r, (0, 0, 255), 0)  # Contour rouge pour autres cercles
+    # Séparer en 4 quarts l'image
+    # Obtenir les dimensions de l'image
+    height, width = roi_thresh.shape
 
-        # Sort
-        st.write(circleLocation)
+    # Calculer les dimensions de chaque partie
+    half_height = height // 2
+    half_width = width // 2
+
+    # Découper l'image en 4 parties
+    top_left = roi_thresh[:half_height, :half_width].copy()
+    top_right = roi_thresh[:half_height, half_width:].copy()
+    bottom_left = roi_thresh[half_height:, :half_width].copy()
+    bottom_right = roi_thresh[half_height:, half_width:].copy()
+    quart = [top_left, top_right, bottom_left, bottom_right]
+
+    # Scanner chaque coin pour y trouver les cercles
+    circleLocation = []  # Liste pour stocker les cercles détectés
+
+    for i in range(4):  # Boucle sur les 3 quarts de l'image
+        quart[i] = cv2.GaussianBlur(quart[i], (3, 3), 2)
+
+        HoughCircles = cv2.HoughCircles(
+            quart[i],
+            cv2.HOUGH_GRADIENT,
+            dp=1,
+            minDist=5,
+            param1=50,
+            param2=25,
+        )
+
+        if HoughCircles is not None:
+            HoughCircles = np.round(HoughCircles[0, :]).astype("int")  # Convertir en entiers
+
+            for j in HoughCircles:
+                x, y, r = j  # Extraire les coordonnées et le rayon
+                cv2.circle(quart[i], (x, y), r, (0, 0, 255), 2)  # Dessiner le cercle
+
+            # Prendre le 1er rond trouvé
+            x, y, r = HoughCircles[0]
+            if i == 0:
+                circleLocation.append(np.array([x-30, y-30]))
+            elif i == 1:
+                circleLocation.append(np.array([x+half_width+30, y-30]))
+            elif i == 2:
+                circleLocation.append(np.array([x-30, y+half_height+30]))
+            elif i == 3:
+                circleLocation.append(np.array([x+half_width+30, y+half_height+30]))
+
+    # Applanir l'image
+    if circleLocation is not None and len(circleLocation) == 4 :
+        st.write("### Points d'angles détéctés, mise à plat de l'image")
 
         # Points de l'image source (par exemple, 4 coins d'un document)
         src_points = np.array(circleLocation, dtype=np.float32)
@@ -84,7 +132,7 @@ if image is not None:
         # Appliquer la transformation
         roi_thresh = cv2.warpPerspective(roi_thresh, matrix, (400, 400))
 
-    st.image(roi_thresh)
+        st.image(roi_thresh, caption="Image applanie")
 
     # Reconnaissance de pattern
     st.write("### Détection de patterns dans la ROI :")
@@ -148,21 +196,3 @@ if image is not None:
             st.image(matched_image, caption=f"Correspondances avec {best_pattern_path}", use_container_width=True)
         else:
             st.error("Aucun pattern détecté.")
-
-'''
-L'application fonctionne avec :
-
-    3-3 (Avec Resize)
-    4-3 (Sans Resize)
-    1-3 (Avec Resize)
-    2-3 (Avec Resize)
-    B-2-autre (Sans Resize)
-    Patern2_MiseEnAbime (Sans Resize)
-    Produit-1
-    MEA-6-3G (Avec Resize)
-    ---------------------------------
-    Taux de réussite : 24.24%
-
-Ne fonctionne pas avec le reste.
-
-'''

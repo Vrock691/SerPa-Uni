@@ -114,6 +114,7 @@ L'application fonctionne avec :
     4-3 (Sans Resize)
     1-3 (Avec Resize)
     2-3 (Avec Resize)
+    MEA-6-3G (Avec Resize)
 
     MEA-14-4G (Sans Resize)
     MEA-11-4G (Avec Resize)
@@ -124,7 +125,7 @@ L'application fonctionne avec :
     Produit-1
     MEA-6-3G (Avec Resize)
     ---------------------------------
-    Taux de réussite : 24.24%
+    Taux de réussite : 23.52%
 
 Ne fonctionne pas avec le reste.
 

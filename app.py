@@ -82,7 +82,7 @@ if image is not None:
     # Reconnaissance de pattern
     st.write("### Détection de patterns dans la ROI :")
 
-    if (circleLocation is not None and circleLocation == 4):
+    if (circleLocation is not None and len(circleLocation) == 4):
         # Si les ronds ont été détécté, on applique l'algorithme poussé
         findBestPatternMultiComparaison(roi_thresh)
     else:

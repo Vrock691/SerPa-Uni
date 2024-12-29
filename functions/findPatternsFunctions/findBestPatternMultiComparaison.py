@@ -40,8 +40,7 @@ def findBestPatternMultiComparaison(image):
         approx = cv2.approxPolyDP(contour, epsilon, True)
 
         if len(approx) >= 4:
-            # Vérifier si les angles sont proches de 90° et si la forme est noire
-            if cv2.contourArea(approx) > 100:  # Filtrer les très petits objets
+            if cv2.contourArea(approx) > 10:  # Filtrer les très petits objets
                 # Dessiner le contour détecté
                 cv2.drawContours(quart[quartNum], [approx], -1, (0, 255, 0), 3)
 

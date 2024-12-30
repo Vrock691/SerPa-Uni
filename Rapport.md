@@ -22,53 +22,44 @@ L’intérêt principal de ce programme réside dans ses applications variées e
 
 ## Partie 2 : La Création
 
-Dès les premières étapes de la conception du programme, nous avons choisi d’utiliser le framework Streamlit. Ce framework nous a permis d’augmenter l’interactivité entre l’utilisateur et le programme sans avoir à recourir au terminal, en hébergeant l’application sur un site et en intégrant divers éléments d'interface tels que la dropzone, le titre du programme, ainsi que des textes explicatifs.
+### Conception
+Dès les premières étapes de la conception du programme, nous avons opté pour le framework Streamlit. Ce choix stratégique nous a permis de créer une interface utilisateur interactive et conviviale, sans dépendre d'un terminal. En hébergeant l’application sur une plateforme web, nous avons pu intégrer divers éléments d’interface tels qu’une dropzone pour le dépôt de fichiers, un titre descriptif, ainsi que des textes explicatifs pour guider l’utilisateur.
 
-De plus, en conformité avec les consignes, nous avons utilisé la bibliothèque suivante :
+### Bibliothèques utilisées
+Conformément aux consignes, nous avons exploité plusieurs bibliothèques pour répondre aux exigences du projet :
 
-- **OpenCV** : Cette bibliothèque nous a permis d'exploiter plusieurs algorithmes, notamment SIFT et ORB, afin de réaliser un traitement avancé et complet des images (*Conversion des images en teintes de gris, Lire les images, Mettre en place un système de match, etc.*).
+- **OpenCV** : Cette bibliothèque a été le cœur du traitement d’images. Elle nous a permis d’implémenter des algorithmes avancés comme SIFT et ORB pour diverses opérations, notamment :
+    - Conversion des images en niveaux de gris.
+    - Lecture et traitement des fichiers d'image.
+    - Mise en place d’un système de correspondance des caractéristiques.
 
-Ainsi que quelques bibliothèques suplémentaires :
+En complément, nous avons utilisé des bibliothèques supplémentaires pour enrichir les fonctionnalités :
 
-- **NumPy** : Elle a facilité la représentation des images sous forme de tableaux numériques, ce qui a simplifié leur manipulation, l’extraction des pixels et la délimitation de la Region of Interest (*ROI*) afin de permettre à l’utilisateur de restreindre la zone de recherche du motif. Cette approche, bien qu’imparfaite, est la plus efficace et rapide dans le contexte présent.
+- **NumPy** : Cette bibliothèque a été essentielle pour représenter les images sous forme de tableaux numériques. Elle a simplifié des tâches comme l’extraction des pixels et la délimitation de la région d'intérêt (*Region of Interest*, ROI). Cette délimitation permet à l’utilisateur de restreindre la zone de recherche d’un motif. Bien qu’imparfaite, cette approche s'est avérée rapide et adaptée au contexte.
 
-- **PIL** : Cette bibliothèque nous a permis de lire directement, au sein du programme, les images traitées par la bibliothèque **Streamlit**.
+- **PIL** : Grâce à cette bibliothèque, nous avons pu lire et manipuler directement, au sein du programme, les images traitées via Streamlit, garantissant une intégration fluide avec l’interface utilisateur.
 
+### Structuration et Organisation
+Afin d’optimiser la clarté et la maintenabilité du code, nous avons décidé de séparer les fonctions auxiliaires du fichier principal. Cette démarche a permis de réduire la taille du fichier principal tout en améliorant la lisibilité et la modularité du programme.
 
+### Approche algorithmique
+Pour l’analyse et la correspondance des motifs, nous avons principalement utilisé SIFT. Initialement, nous avions également testé ORB, mais les résultats se sont avérés décevants en raison de la sensibilité d’ORB aux déformations géométriques complexes et aux variations de perspective, ce qui a conduit à un taux de réussite insuffisant.
 
+Dans une tentative d'amélioration, nous avons exploré une combinaison des algorithmes SIFT et ORB afin de profiter des points forts de chacun :
 
-Nous avons ensuite décider, dans un soucis de propreté et de taille de fichier, de séparer notre fichier principale de ses fonctions.
+- **ORB** : Rapide, peu gourmand en ressources et robuste face aux variations d’éclairage.
+- **SIFT** : Plus coûteux en termes de calcul, mais capable de gérer efficacement les transformations complexes, telles que les rotations, les changements d’échelle et les déformations.
 
+Cependant, cette combinaison n’a pas produit d'amélioration notable des performances (*voir les sections détaillées sur les échecs*).
 
-
-
-
-
-
-
-
-
-
-
-
-
-Concernant les algorithmes utilisés, nous nous sommes appuyés principalement sur SIFT. Bien que nous ayons initialement testé ORB, les résultats obtenus étaient décevants, notamment en raison de la sensibilité d’ORB aux déformations géométriques et aux variations complexes de perspective, ce qui a entraîné une baisse significative du taux de réussite.
-
-Une tentative de combinaison de SIFT et ORB a été réalisée dans l’optique de tirer parti de leurs avantages respectifs :
-
-- ORB est rapide, peu gourmand en ressources et robuste face aux variations d’éclairage.
-
-- SIFT, bien que plus coûteux en termes de calculs, se distingue par sa capacité à gérer les transformations complexes, telles que les rotations, les changements d’échelle et les déformations.
-
-Cependant, cette combinaison n’a pas permis d’améliorer significativement les résultats (*C.F. Les Echecs*).
-
-Nous avons donc décidé de repenser l'algorithme pour qu'il divise le pattern en 4 afin de reconnaitre si le est soit noir soit blanc. Cette technique, bien que plus complexe s'est révélé bien plus efficace.
+### Nouvelle solution : division en quadrants
+Pour surmonter ces limitations, nous avons repensé l'algorithme en adoptant une approche innovante. Le motif a été divisé en quatre parties, permettant une analyse segmentée basée sur les contrastes de couleur (noir ou blanc). Bien que cette méthode soit plus complexe, elle s'est avérée significativement plus efficace et a considérablement amélioré le taux de réussite global.
 
 ## Partie 3 : Les Réussites et Les Echecs
 
 ### L'Analyse des performances actuelles :
 
-De manière générale, et sur la base des images testées, notre application atteint un taux de réussite de **49.02%**.
+De manière générale, et sur la base des images testées, notre application atteint un taux de réussite de **49.03%**.
 
 D'une part, bien que ce résultat reste mitigé, il reste néanmoins convenable dans certains cas spécifiques. En effet, notre algorithme excelle particulièrement dans les situations où :
 

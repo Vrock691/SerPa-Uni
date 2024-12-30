@@ -42,22 +42,22 @@ def findBestPatternSingleComparaison(image):
             matched_image, caption=f"Correspondances avec {best_pattern_path}", use_container_width=True)
 
         associate_numbers = {
-            "./patterns/Paterne1.png": 0,
+            "./patterns/Paterne1.png": 1,
             "./patterns/Paterne2.png": 2,
-            "./patterns/Paterne3.png": 1,
+            "./patterns/Paterne3.png": 3,
             "./patterns/Paterne4.png": 4,
-            "./patterns/Paterne5.png": 8,
-            "./patterns/Paterne6.png": 3,
-            "./patterns/Paterne7.png": 12,
-            "./patterns/Paterne8.png": 5,
-            "./patterns/Paterne9.png": 10,
-            "./patterns/Paterne10.png": 9,
-            "./patterns/Paterne11.png": 6,
-            "./patterns/Paterne12.png": 13,
-            "./patterns/Paterne13.png": 15,
+            "./patterns/Paterne5.png": 5,
+            "./patterns/Paterne6.png": 6,
+            "./patterns/Paterne7.png": 7,
+            "./patterns/Paterne8.png": 8,
+            "./patterns/Paterne9.png": 9,
+            "./patterns/Paterne10.png": 10,
+            "./patterns/Paterne11.png": 11,
+            "./patterns/Paterne12.png": 12,
+            "./patterns/Paterne13.png": 13,
             "./patterns/Paterne14.png": 14,
-            "./patterns/Paterne15.png": 11,
-            "./patterns/Paterne16.png": 7,
+            "./patterns/Paterne15.png": 15,
+            "./patterns/Paterne16.png": 16,
         }
 
         # Affichage du nombre correspondant au pattern

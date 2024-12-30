@@ -34,6 +34,24 @@ Ainsi que quelques bibliothèques suplémentaires :
 
 - **PIL** : Cette bibliothèque nous a permis de lire directement, au sein du programme, les images traitées par la bibliothèque **Streamlit**.
 
+
+
+
+Nous avons ensuite décider, dans un soucis de propreté et de taille de fichier, de séparer notre fichier principale de ses fonctions.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 Concernant les algorithmes utilisés, nous nous sommes appuyés principalement sur SIFT. Bien que nous ayons initialement testé ORB, les résultats obtenus étaient décevants, notamment en raison de la sensibilité d’ORB aux déformations géométriques et aux variations complexes de perspective, ce qui a entraîné une baisse significative du taux de réussite.
 
 Une tentative de combinaison de SIFT et ORB a été réalisée dans l’optique de tirer parti de leurs avantages respectifs :
@@ -42,42 +60,54 @@ Une tentative de combinaison de SIFT et ORB a été réalisée dans l’optique 
 
 - SIFT, bien que plus coûteux en termes de calculs, se distingue par sa capacité à gérer les transformations complexes, telles que les rotations, les changements d’échelle et les déformations.
 
-Cependant, cette combinaison n’a pas permis d’améliorer significativement les résultats. C'est pour cela que nous avons décidé de rester sur SIFT. 
+Cependant, cette combinaison n’a pas permis d’améliorer significativement les résultats (*C.F. Les Echecs*).
+
+Nous avons donc décidé de repenser l'algorithme pour qu'il divise le pattern en 4 afin de reconnaitre si le est soit noir soit blanc. Cette technique, bien que plus complexe s'est révélé bien plus efficace.
 
 ## Partie 3 : Les Réussites et Les Echecs
 
-Afin de bien couvrir l'intégralité de cette partie, nous allons nous permettre de la diviser en trois sous parties.
-
 ### L'Analyse des performances actuelles :
 
-De manière générale, et sur la base des images testées, notre application atteint un taux de réussite de **23,52%**.
+De manière générale, et sur la base des images testées, notre application atteint un taux de réussite de **49.02%**.
 
-D'une part, bien que ce résultat ne puisse être qualifié ni d'extraordinaire ni de pleinement satisfaisant, il reste néanmoins convenable dans certains cas spécifiques. En effet, notre algorithme excelle particulièrement dans les situations où :
+D'une part, bien que ce résultat reste mitigé, il reste néanmoins convenable dans certains cas spécifiques. En effet, notre algorithme excelle particulièrement dans les situations où :
 
 - Le motif recherché se trouve sur un fond blanc uni, permettant une reconnaissance visuelle claire et sans ambiguïté.
 - Le motif n'est pas sujet à des distorsions majeures. Il est capable de tolérer certaines déformations mineures sans altérer la détection (*comme observé avec l'image MEA-5-4G*).
 
-Vous retrouverez, ci-dessous, la liste des images où SerPa a reussi à détecter une pattern
+Vous retrouverez, ci-dessous, la liste des images où SerPa a reussi à détecter un pattern
 
-|Nom de l'Image|Avec Recadrage|Sans Recadrage|
-|:-|:--:|:--:|
-|3-3|X| |
-|4-3| |X|
-|1-3||X|
-|2-3||X|
-|MEA-6-3G||X|
-|MEA-14-4G||X|
-|MEA-11-4G|X||
-|MEA-5-4G||X|
-|B-2-autre||X|
-|Patern2_MiseEnAbime||X|
-|Produit-1|X||
+| Nom de l'Image           | Avec Recadrage | Sans Recadrage | Via Sift | Via Chiffres |
+|:-------------------------|:--------------:|:--------------:|:--------:|:------------:|
+| 3-3                      |                | X              | X        |              |
+| 4-3                      |                | X              | X        |              |
+| 1-3                      | X              |                | X        |              |
+| 2-3                      | X              |                | X        |              |
+| B-2-autre                |                | X              |          | X            |
+| B-2                      | X              |                |          | X            |
+| R-2                      | X              |                |          | X            |
+| T-2                      | X              |                |          | X            |
+| L-2                      |                | X              |          | X            |
+| 4-4                      | X              |                |          | X            |
+| 4-1                      | X              |                |          | X            |
+| 2-2                      |                | X              |          | X            |
+| 2-1                      |                | X              |          | X            |
+| Patern2_MiseEnAbime      |                | X              |          | X            |
+| Produit-1                | X              |                |          | X            |
+| MEA-6-3G                 | X              |                |          | X            |
+| MEA-8-3G                 |                | X              |          | X            |
+| MEA-5-3G                 | X              |                |          | X            |
+| MEA-4-3G                 | X              |                |          | X            |
+| MEA-3-3G                 |                | X              |          | X            |
+| MEA-14-4G                | X              | X              | X        | X            |
+| MEA-7-4G                 | X              |                | X        | X            |
+| MEA-6-4G                 | X              |                |          | X            |
+| MEA-5-4G                 |                | X              |          | X            |
+| MEA-4-4G                 |                | X              |          | X            |
 
-Cela montre que notre solution est fonctionnelle dans un cadre relativement contrôlé, mais ses performances diminuent rapidement lorsque ces conditions idéales ne sont pas respectées.
+Cela démontre que notre solution fonctionne de manière satisfaisante dans un environnement relativement contrôlé. Cependant, ses performances se dégradent rapidement lorsque ces conditions idéales ne sont plus respectées.
 
-D'autre part, les chiffres révèlent également une faiblesse notable : dans **76,48%** des cas, l'algorithme échoue à identifier le motif au sein des images. Ce taux d'échec est beaucoup trop élevé pour considérer l'application comme pleinement opérationnelle ou efficace dans des scénarios variés ou en conditions réelles.
-
-Il est aussi important de noté qu'une grande majorité des erreurs est une mauvaise reconnaissance du pattern (*Retourné, Negatif, etc.*) et non une non-reconnaissance dudit pattern.
+Par ailleurs, les données révèlent une faiblesse notable : dans **50,98 %** des cas, soit environ une fois sur deux, l'algorithme échoue à identifier correctement le motif au sein des images. Bien que ce taux d'échec soit significatif, il reste dans des limites que nous pouvons qualifier d'acceptables pour envisager une application opérationnelle. Néanmoins, pour garantir une efficacité optimale dans des scénarios diversifiés ou en conditions réelles, des améliorations devront être apportées à l'algorithme afin de réduire cette marge d'erreur.
 
 ### Points encourageants malgré tout :
 

@@ -10,34 +10,6 @@ from functions.warpImage import warpImage
 
 st.title("SerPA - Reconnaissance de Pattern")
 
-'''
-L'application fonctionne avec :
-
-    3-3 (Sans Resize)
-    4-3 (Sans Resize)
-    1-3 (Avec Resize)
-    2-3 (Avec Resize)
-    B-2-autre (Sans Resize)
-    B-2 (Avec Resize)
-    R-2 (Avec Resize)
-    T-2 (Avec Resize)
-    L-2 (Sans Resize)
-    4-4 (Avec Resize)
-    4-1 (Avec Resize)
-    2-2 (Sans Resize)
-    2-1 (Sans Resize)
-    Patern2_MiseEnAbime (Sans Resize)
-    Produit-1
-    MEA-6-3G (Avec Resize)
-    MEA-8-3G (Sans Resize)
-    MEA-5-3G (Avec Resize)
-    MEA-4-3G (Avec Resize)
-    MEA-3-3G (Sans Resize)
-    ---------------------------------
-    Taux de réussite : 62.50% (Ne fonctionne pas avec le reste.)
-
-'''
-
 # Chargement de l'image
 image = st.file_uploader("Veuillez téléchargez une image juse en dessous :", type=["jpg", "png"])
 
@@ -100,3 +72,40 @@ if image is not None:
     else:
         # sinon on fait la comparaison sur toute l'image
         findBestPatternSingleComparaison(roi_thresh)
+
+
+'''
+L'application fonctionne avec :
+
+    3-3 (Sans Resize)
+    4-3 (Sans Resize)
+    1-3 (Avec Resize)
+    2-3 (Avec Resize)
+    B-2-autre (Sans Resize)
+    B-2 (Avec Resize)
+    R-2 (Avec Resize)
+    T-2 (Avec Resize)
+    L-2 (Sans Resize)
+    4-4 (Avec Resize)
+    4-1 (Avec Resize)
+    2-2 (Sans Resize)
+    2-1 (Sans Resize)
+
+    Patern2_MiseEnAbime (Sans Resize)
+    Produit-1
+
+    MEA-6-3G (Avec Resize)
+    MEA-8-3G (Sans Resize)
+    MEA-5-3G (Avec Resize)
+    MEA-4-3G (Avec Resize)
+    MEA-3-3G (Sans Resize)
+
+    MEA-14-4G (Sans Resize et Via Chiffre et Via SIFT)
+    MEA-7-4G (Avec Resize et Via Chiffre et Via SIFT)
+    MEA-6-4G (Avec Resize et Via Chiffre)
+    MEA-5-4G (Sans Resize et Via Chiffre)
+    MEA-4-4G (Sans Resize et Via Chiffre)
+    ---------------------------------
+    Taux de réussite : 62.50% (Ne fonctionne pas avec le reste.)
+
+'''

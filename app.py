@@ -10,8 +10,21 @@ from functions.warpImage import warpImage
 
 st.title("SerPA - Reconnaissance de Pattern")
 
+'''
+SerPa, ou Searchin Pattern, est un programme innovant dédié à la reconnaissance de motifs spécifiques dans des images variées. Sa conception vise des usages pratiques et interactifs, tels que :
+
+- **Accès VIP** : Détection de motifs exclusifs pour gérer l’entrée dans des espaces réservés.
+- **Communication sécurisée** : Lecture de codes binaires pour transmettre des messages confidentiels.
+- **Jeux immersifs** : Intégration dans des escape games pour scanner des indices.
+
+Développé avec le framework *Streamlit*, SerPa utilise des bibliothèques comme OpenCV (*analyse d'images via SIFT*), NumPy (*manipulation de données*) et PIL (*gestion des fichiers*). Sa structuration modulaire garantit un traitement rapide et efficace.
+
+Malgré une efficacité globale de **49,03 %**, l’algorithme excelle en environnement contrôlé, et ce particulièrement lorsque les motifs sont peu déformés ou sur un fond uni. A noter que cette application évite efficacement les faux positifs.
+
+'''
+
 # Chargement de l'image
-image = st.file_uploader("Veuillez téléchargez une image juse en dessous :", type=["jpg", "png"])
+image = st.file_uploader("Veuillez téléchargez une image juse en dessous afin de vérifier si notre pattern si trouve :", type=["jpg", "png"])
 
 if image is not None:
     # Chargement de l'image avec PIL
@@ -75,7 +88,11 @@ if image is not None:
 
 
 '''
-L'application fonctionne avec :
+-----------------------------------------------------------------
+
+**NOTE POUR LES DEVELLOPEUR**
+
+    Avec la base de donnée actuelle, l'application fonctionne avec :
 
     3-3 (Sans Resize)
     4-3 (Sans Resize)
@@ -90,16 +107,16 @@ L'application fonctionne avec :
     4-1 (Avec Resize)
     2-2 (Sans Resize)
     2-1 (Sans Resize)
-
+    ---------------------------------
     Patern2_MiseEnAbime (Sans Resize)
     Produit-1
-
+    ---------------------------------
     MEA-6-3G (Avec Resize)
     MEA-8-3G (Sans Resize)
     MEA-5-3G (Avec Resize)
     MEA-4-3G (Avec Resize)
     MEA-3-3G (Sans Resize)
-
+    ---------------------------------
     MEA-14-4G (Sans Resize et Via Chiffre et Via SIFT)
     MEA-7-4G (Avec Resize et Via Chiffre et Via SIFT)
     MEA-6-4G (Avec Resize et Via Chiffre)

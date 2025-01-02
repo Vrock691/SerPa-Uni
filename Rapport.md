@@ -118,6 +118,6 @@ Pour améliorer les performances globales de SerPa, plusieurs axes d’améliora
 
 En somme, bien que les performances actuelles de SerPa soient encore en deçà des attentes dans des situations variées, les résultats encourageants obtenus dans des configurations spécifiques, ainsi que l’absence de faux positifs, constituent une base solide. Grâce à ces pistes d’amélioration, l’application pourrait évoluer significativement et répondre à des besoins plus larges avec une efficacité accrue.
 
-# Partie 5 : Annexe
+## Partie 5 : Annexe
 - Cloud Streamlit : [serpa-uni.streamlit.app](https://serpa-uni.streamlit.app/)
 - Repository Github : [Vrock691/SerPa-Uni](https://github.com/Vrock691/SerPa-Uni)

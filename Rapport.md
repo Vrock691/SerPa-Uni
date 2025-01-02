@@ -117,3 +117,7 @@ Pour améliorer les performances globales de SerPa, plusieurs axes d’améliora
 - **Élargissement de la base de tests** : Tester l’algorithme sur un éventail plus large de situations permettrait de mieux identifier ses failles et d’y remédier. En affinant l’algorithme à partir d’images variées et complexes, nous pourrions améliorer sa robustesse face à des conditions moins idéales.
 
 En somme, bien que les performances actuelles de SerPa soient encore en deçà des attentes dans des situations variées, les résultats encourageants obtenus dans des configurations spécifiques, ainsi que l’absence de faux positifs, constituent une base solide. Grâce à ces pistes d’amélioration, l’application pourrait évoluer significativement et répondre à des besoins plus larges avec une efficacité accrue.
+
+# Partie 5 : Annexe
+- Cloud Streamlit : [serpa-uni.streamlit.app](https://serpa-uni.streamlit.app/)
+- Repository Github : [Vrock691/SerPa-Uni](https://github.com/Vrock691/SerPa-Uni)

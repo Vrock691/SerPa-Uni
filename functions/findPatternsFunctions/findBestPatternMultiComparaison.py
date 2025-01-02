@@ -27,6 +27,9 @@ def findBestPatternMultiComparaison(image):
 
     rectangledetected = True
     quartNum = 0
+
+    columns = st.columns(4)
+
     while rectangledetected == True and quartNum < 4:
         # Parcourir les patterns quart pour trouver des rectangles noirs
         contours, _ = cv2.findContours(
@@ -49,7 +52,8 @@ def findBestPatternMultiComparaison(image):
                 else:
                     color = "black"
 
-                st.image(quart[quartNum], "Couleur du rectangle : " + color)
+                with columns[quartNum]:
+                    st.image(quart[quartNum], "Couleur du rectangle : " + color)
 
                 if quartNum == 0:
                     if len(approx) != 4: number += 1

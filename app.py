@@ -8,6 +8,7 @@ from functions.findPatternsFunctions.findBestPatternMultiComparaison import find
 from functions.findPatternsFunctions.findBestPatternSingleComparaison import findBestPatternSingleComparaison
 from functions.warpImage import warpImage
 
+st.set_page_config(page_title="SerPa")
 st.title("SerPA - Reconnaissance de Pattern")
 
 '''
@@ -50,10 +51,15 @@ if image is not None:
         # Visualisation de la ROI
         preview = img_array.copy()
         cv2.rectangle(preview, (x1, y1), (x2, y2), (255, 0, 0), 2)
-        st.image(preview, caption="Image avec ROI sélectionnée", use_container_width=True)
+
+        col1, col2 = st.columns(2)
+
+        with col1:
+            st.image(preview, caption="Image avec ROI sélectionnée", use_container_width=True)
 
         # Afficher la ROI seule
-        st.image(roi, caption="Zone d'intérêt sélectionnée (ROI)", use_container_width=True)
+        with col2:
+            st.image(roi, caption="Zone d'intérêt sélectionnée (ROI)", use_container_width=True)
     else:
         st.error("La zone sélectionnée n'est pas valide. Vérifiez les valeurs des sliders.")
     
@@ -90,7 +96,7 @@ if image is not None:
 '''
 -----------------------------------------------------------------
 
-**NOTE POUR LES DEVELLOPEUR**
+**NOTE POUR LES DEVELOPPEURS**
 
     Avec la base de donnée actuelle, l'application fonctionne avec :
 

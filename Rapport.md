@@ -8,7 +8,7 @@ Ce rapport a pour objectif de présenter les finalités de l'algorithme, d’en 
 
 ## Partie 1 : Les Applications et Usages
 
-Le programme SerPa, également connu sous le nom de Searchin Pattern, est conçu pour exceller dans la reconnaissance de motifs spécifiques au sein d’images variées. Dans sa version actuelle, SerPa est capable d’identifier jusqu’à 16 motifs différents sur des supports visuels divers, tels que des panneaux publicitaires, des affiches, des gobelets, etc.
+Le programme SerPa, également connu sous le nom de Searchin Pattern, est conçu pour exceller dans la reconnaissance de motifs spécifiques au sein d’images variées. Chaque pattern est associé à un nombre binaire à 4 bits. Ce codage repose sur un carré central, divisé en quatre sous-carrés. Chacun de ces sous-carrés est soit noir (représentant un bit de valeur 1) soit blanc (représentant un bit de valeur 0). La lecture s'effectue dans l'ordre suivant : haut gauche -> haut droite -> bas gauche -> bas droit. Dans sa version actuelle, SerPa est capable d’identifier jusqu’à 16 motifs différents sur des supports visuels divers, tels que des panneaux publicitaires, des affiches, des gobelets, etc.
 
 L’intérêt principal de ce programme réside dans ses applications variées et innovantes :
 
@@ -52,8 +52,11 @@ Dans une tentative d'amélioration, nous avons exploré une combinaison des algo
 
 Cependant, cette combinaison n’a pas produit d'amélioration notable des performances (*voir les sections détaillées sur les échecs*).
 
-### Nouvelle solution : division en quadrants
-Pour surmonter ces limitations, nous avons repensé l'algorithme en adoptant une approche innovante. Le motif a été divisé en quatre parties, permettant une analyse segmentée basée sur les contrastes de couleur (noir ou blanc). Bien que cette méthode soit plus complexe, elle s'est avérée significativement plus efficace et a considérablement amélioré le taux de réussite global.
+Pour surmonter ces limitations, nous avons repensé l'algorithme en adoptant une approche innovante. Tout d'abord, nous utilisons la détection de cercles disponible dans la bibliothèque OpenCV pour localiser les trois cercles noirs et le cercle blanc qui encadrent le motif à scanner. Pour ce faire, nous divisons la zone d'intérêt en quatre quadrants et enregistrons leurs coordonnées afin d’aplanir l’image à l’aide d’une transformation de perspective (warp) et ainsi rapprocher les motifs scannés de leur représentation idéale. Si aucun cercle n’est détecté ou si la détection est incomplète, cette fonction n’est pas exécutée pour éviter tout étirement destructeur.
+
+Ensuite, les quatre parties de la zone d’intérêt sont soumises à une détection de contours pour identifier les éventuels carrés blancs ou noirs. Si les rectangles ne peuvent pas être détectés correctement, l’algorithme repasse la main à SIFT pour effectuer une reconnaissance basée sur les motifs enregistrés.
+
+Bien que cette méthode soit plus complexe et coûteuse en termes de calcul, elle s’est avérée significativement plus efficace sur une partie du jeu de données et a permis une amélioration notable du taux de réussite global.
 
 ## Partie 3 : Les Réussites et Les Echecs
 
